@@ -1,7 +1,8 @@
 import _ from "lodash";
 import async from "async";
-import fs from "fs";
 import {errorObj, successObj} from './settings'
+
+const fs = require('fs');
 
 export const handleMediaUpload = (data) => {
     return new Promise((resolve) => {
