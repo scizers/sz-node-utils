@@ -1,0 +1,23 @@
+{
+  "name": "sz-node-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scizers/sz-node-utils.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scizers/sz-node-utils/issues"
+  },
+  "homepage": "https://github.com/scizers/sz-node-utils#readme",
+  "dependencies": {
+    "async": "^2.6.2",
+    "lodash": "^4.17.11"
+  }
+}
