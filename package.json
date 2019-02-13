@@ -12,9 +12,10 @@
     "url": "https://github.com/scizers/sz-node-utils/issues"
   },
   "homepage": "https://github.com/scizers/sz-node-utils#readme",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "rollup -c -o lib/index.js",
+    "build": "rollup -c ",
+    "start": "rollup -c -w",
     "prepublish": "npm run build"
   },
   "peerDependencies": {
