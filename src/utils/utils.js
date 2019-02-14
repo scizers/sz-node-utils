@@ -1,5 +1,6 @@
 import _ from "lodash";
 import async from "async";
+import uuid from "uuid";
 import {errorObj, successObj} from './settings'
 
 const fs = require('fs');
