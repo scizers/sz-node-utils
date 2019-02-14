@@ -2,7 +2,7 @@
   "engine": "node >= 6.5.x",
   "main": "dist/index.js",
   "keywords": [
-    "module",
+    "ishaan",
     "es6",
     "es5",
     "npm",
