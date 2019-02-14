@@ -1,12 +1,9 @@
+sudo: false
 language: node_js
 node_js:
-  - "lts/*"
-  - "node"
-
-before_script: npm run lint
-script: npm run test
-after_success: npm run coveralls
-
-branches:
-  only:
-    - master
+  - '8'
+  - '7'
+  - '6'
+matrix:
+  fast_finish: true
+script: npm run prepare

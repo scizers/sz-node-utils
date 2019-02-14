@@ -1,23 +1,7 @@
 {
-  "presets": [
-    [ "env", { "modules": false } ],
-    "stage-0",
-    "react",
-    "flow"
-  ],
-
-  "env": {
-    "test": {
-      "presets": [
-        "env"
-      ]
-    }
-  },
-
-  "plugins": [
-    ["module-resolver", {
-      "root": ["./src"]
-    }],
-    "transform-runtime"
-  ]
+    "presets": [ "env" ],
+    "ignore": [],
+    "plugins": [ "transform-object-rest-spread","transform-class-properties"],
+    "sourceMaps": true,
+    "retainLines": true
 }

@@ -1,4 +1,13 @@
 {
+  "engine": "node >= 6.5.x",
+  "main": "dist/index.js",
+  "keywords": [
+    "module",
+    "es6",
+    "es5",
+    "npm",
+    "babel"
+  ],
   "name": "sz-node-utils",
   "version": "1.0.0",
   "description": "",
@@ -12,51 +21,39 @@
     "url": "https://github.com/scizers/sz-node-utils/issues"
   },
   "homepage": "https://github.com/scizers/sz-node-utils#readme",
-  "main": "dist/index.js",
   "scripts": {
-    "build": "rollup -c ",
-    "start": "rollup -c -w",
-    "prepublish": "npm run build"
-  },
-  "peerDependencies": {
-    "react": "^15 || ^16",
-    "react-dom": "^15 || ^16"
+    "clean": "rimraf dist/",
+    "build": "rimraf dist/ && babel src/ --out-dir dist/",
+    "test": "./node_modules/.bin/jest",
+    "check": "./node_modules/.bin/npm-check -u",
+    "prepare": "npm run clean && npm run build",
+    "pub": "./node_modules/.bin/np || true"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
     "async": "^2.6.2",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "babel-core": "6.26.0",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
     "babel-eslint": "8.2.3",
-    "babel-plugin-module-resolver": "3.1.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-jest": "22.4.3",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "1.6.1",
-    "babel-preset-flow": "6.23.0",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-0": "6.24.1",
-    "coveralls": "3.0.0",
-    "cross-env": "5.1.4",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "16.1.0",
+    "eslint-config-prettier": "2.9.0",
     "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.7.0",
-    "flow-bin": "0.70.0",
-    "flow-typed": "2.4.0",
-    "fs-file-tree": "1.0.6",
     "jest": "22.4.3",
-    "react": "16.3.2",
-    "react-dom": "16.3.2",
+    "np": "2.20.1",
+    "npm-check": "5.7.0",
     "rimraf": "2.6.2",
-    "rollup": "0.58.1",
-    "rollup-plugin-babel": "3.0.3",
-    "rollup-plugin-commonjs": "9.1.0",
-    "rollup-plugin-node-resolve": "3.3.0",
-    "rollup-plugin-replace": "2.0.0",
-    "rollup-plugin-uglify": "3.0.0"
+    "run-sequence": "2.2.1"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
