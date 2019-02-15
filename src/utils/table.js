@@ -7,6 +7,7 @@ const utils = {
         let x = Object.assign({}, obj)
         delete x.results
         delete x.page
+        delete x.count
         delete x.sortField
         delete x.sortOrder
         delete x.selectors
