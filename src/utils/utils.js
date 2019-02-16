@@ -105,4 +105,40 @@ export const handleSingleMediaUpload = (data) => {
     })
 }
 
+export const handleMediaResponse = (data, url) => {
+    return new Promise((resolve) => {
+
+        let body = _.clone(data)
+
+        async.forEachOf(body, async (item, key, done) => {
+
+            if (_.isArray(item)) {
+
+                let kk = []
+                async.each(item, (file, next) => {
+
+                    let x = file.path && file.uid;
+                    kk.push({...file, url: `${url}${file.url}`, status: 'done'})
+
+                    next()
+
+                }, () => {
+
+                    body[key] = kk
+                    done();
+                })
+
+            } else {
+                done()
+            }
+
+        }, () => {
+
+            resolve(body)
+
+        })
+    })
+}
+
+
 export default {};
