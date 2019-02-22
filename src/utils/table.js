@@ -122,9 +122,8 @@ export const TableFilterQuery = (Model, Params) => {
         }
 
         query.skip((page - 1) * count).limit(count)
-        query.exec((err, data) => {
+        query.lean().exec((err, data) => {
             if (err) {
-                console.log(err)
                 return resolve({...errorObj})
 
             } else {
