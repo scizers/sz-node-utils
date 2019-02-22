@@ -15,6 +15,7 @@ export const handleMediaUpload = (data) => {
             if (_.isArray(item)) {
 
                 let kk = []
+
                 async.each(item, (file, next) => {
 
                     let x = file.originFileObj;
@@ -35,6 +36,7 @@ export const handleMediaUpload = (data) => {
 
 
                     } else {
+                        kk.push(file);
                         next()
                     }
 
@@ -122,7 +124,6 @@ export const handleMediaResponse = (data, url) => {
 
                             let x = file.path && file.uid;
                             kk.push({...file, url: `${url}${file.url}`, status: 'done'})
-
                             next()
 
                         }, () => {
