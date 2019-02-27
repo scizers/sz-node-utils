@@ -15,6 +15,7 @@ export const handleMediaUpload = (data) => {
             if (_.isArray(item)) {
 
                 let kk = []
+
                 async.each(item, (file, next) => {
 
                     let x = file.originFileObj;
@@ -35,6 +36,7 @@ export const handleMediaUpload = (data) => {
 
 
                     } else {
+                        kk.push(file);
                         next()
                     }
 
@@ -110,33 +112,67 @@ export const handleMediaResponse = (data, url) => {
 
         let body = _.clone(data)
 
-        async.forEachOf(body, async (item, key, done) => {
+        if (_.isArray(body)) {
+            async.each(body, (singleObj, singCll) => {
 
-            if (_.isArray(item)) {
+                async.forEachOf(singleObj, async (item, key, done) => {
 
-                let kk = []
-                async.each(item, (file, next) => {
+                    if (_.isArray(item)) {
 
-                    let x = file.path && file.uid;
-                    kk.push({...file, url: `${url}${file.url}`, status: 'done'})
+                        let kk = []
+                        async.each(item, (file, next) => {
 
-                    next()
+                            let x = file.path && file.uid;
+                            kk.push({...file, url: `${url}${file.url}`, status: 'done'})
+                            next()
+
+                        }, () => {
+                            singleObj[key] = kk
+                            done();
+                        })
+
+                    } else {
+                        done()
+                    }
 
                 }, () => {
-
-                    body[key] = kk
-                    done();
+                    singCll();
                 })
+            }, () => {
+                resolve(body)
+            })
 
-            } else {
-                done()
-            }
+        } else {
 
-        }, () => {
+            async.forEachOf(body, async (item, key, done) => {
 
-            resolve(body)
+                if (_.isArray(item)) {
 
-        })
+                    let kk = []
+                    async.each(item, (file, next) => {
+
+                        let x = file.path && file.uid;
+                        kk.push({...file, url: `${url}${file.url}`, status: 'done'})
+
+                        next()
+
+                    }, () => {
+
+                        body[key] = kk
+                        done();
+                    })
+
+                } else {
+                    done()
+                }
+
+            }, () => {
+
+                resolve(body)
+
+            })
+        }
+
     })
 }
 
