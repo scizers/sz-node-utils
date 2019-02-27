@@ -60,14 +60,14 @@ export const TableFilterQuery = (Model, Params) => {
 
     return new Promise((resolve) => {
 
-        let {count = 10, page = 1, sortField, sortOrder, regExFilters = [], select, populateArr,} = Params
+        let {results = 10, page = 1, sortField, sortOrder, regExFilters = [], select, populateArr,} = Params
         // let {results, page, sortField, sortOrder, select, lean} = options;
 
         let populateArrFilters = []
 
         let filter = utils.removeExtraTableParams(Params);
 
-        count = parseInt(count)
+        results = parseInt(results)
         page = parseInt(page)
 
         let query = Model.find({}, {});
@@ -121,7 +121,7 @@ export const TableFilterQuery = (Model, Params) => {
             query.sort({[sortField]: order});
         }
 
-        query.skip((page - 1) * count).limit(count)
+        query.skip((page - 1) * results).limit(results)
         query.lean().exec((err, data) => {
             if (err) {
                 return resolve({...errorObj})
