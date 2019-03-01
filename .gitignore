@@ -31,3 +31,4 @@ dist/
 # IDE
 .idea/
 # .vscode/
+package-lock.json
