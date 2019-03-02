@@ -14,6 +14,7 @@ const utils = {
         delete x.select
         delete x.regExFilters
         delete x.populateArr
+        delete x.project
         return x
     },
     runTableDataQuery: (model, options) => {
@@ -138,5 +139,110 @@ export const TableFilterQuery = (Model, Params) => {
 
 
 }
+export const TableFilterQueryWithAggregate = (Model, fieldName, Params) => {
+    return new Promise((resolve) => {
+
+        let {count = 10, page = 1, sortField, sortOrder, regExFilters = [], project, populateArr} = Params
+
+        let filter = utils.removeExtraTableParams(Params);
+
+
+        count = parseInt(count)
+        page = parseInt(page)
+
+
+        let matchArr = [];
+
+
+        let query = Model.aggregate([{$unwind: `$` + `${fieldName}`}, {$project: project}])
+
+        let countQuery = Model.aggregate([{$unwind: `$` + `${fieldName}`}]);
+
+
+        if (filter) {
+            _.each(filter, (val, key) => {
+                if (val !== undefined) {
+                    let valueWord = val;
+
+                    if (regExFilters.includes(key)) {
+                        valueWord = new RegExp(val, 'ig')
+                    }
+
+
+                    key = `${fieldName}.` + key;
+
+                    matchArr.push({[key]: valueWord})
+
+                }
+
+
+            })
+        }
+
+        if (matchArr.length) {
+            query.match({$and: matchArr})
+
+        }
+
+
+        query.skip((page - 1) * count).limit(count)
+
+
+        if (sortField) {
+            let order = sortOrder === 'ascend' ? 'asc' : 'desc'
+            query.sort({[sortField]: order});
+        }
+
+
+        query.exec((err, data) => {
+
+
+            if (err) {
+                return resolve({...errorObj, data: [], total: 0})
+            } else {
+
+
+                if (matchArr.length) {
+                    countQuery.match({$and: matchArr});
+
+                }
+                countQuery.group({
+                    _id: null,
+                    count: {$sum: 1}
+                });
+
+
+                //resolve({data: data, total: data.length, ...successObj})
+
+                countQuery.exec((couerr, coudoc) => {
+                    if (coudoc) {
+                        coudoc = coudoc[0];
+                    }
+                    let dataArr = Object.assign([], data);
+                    async.each(populateArr, (item, cb) => {
+                        let ModalName = item.schemaName;
+                        ModalName.populate(dataArr, {
+                            path: item.path,
+                            select: item.select
+                        }, function (err, result1) {
+                            if (!err) {
+                                dataArr = Object.assign([], result1)
+                                cb();
+                            } else {
+                                cb();
+                            }
+                        })
+                    }, () => {
+                        resolve({data: dataArr, total: coudoc ? coudoc.count : 0, ...successObj})
+                    })
+
+
+                })
+            }
+        })
+
+    })
+}
+
 
 export default utils;
