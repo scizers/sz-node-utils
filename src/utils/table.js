@@ -15,6 +15,8 @@ const utils = {
         delete x.regExFilters
         delete x.populateArr
         delete x.project
+        delete x.dateFilter
+
         return x
     },
     runTableDataQuery: (model, options) => {
