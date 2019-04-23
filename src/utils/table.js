@@ -1,5 +1,6 @@
 import _ from "lodash";
 import async from "async";
+import moment from "moment";
 import {errorObj, successObj} from './settings'
 
 const utils = {
@@ -68,7 +69,10 @@ export const TableFilterQuery = (Model, Params) => {
 
         let populateArrFilters = []
 
+
         let filter = utils.removeExtraTableParams(Params);
+
+        let {dateFilter} = Params;
 
         results = parseInt(results)
         page = parseInt(page)
@@ -92,6 +96,7 @@ export const TableFilterQuery = (Model, Params) => {
             })
         }
 
+
         if (filter) {
             _.each(filter, (val, key) => {
 
@@ -99,7 +104,6 @@ export const TableFilterQuery = (Model, Params) => {
 
                     let valueWord = val;
 
-                    console.log(regExFilters)
                     if (regExFilters.includes(key)) {
                         valueWord = new RegExp(val, 'ig')
                     }
@@ -111,6 +115,17 @@ export const TableFilterQuery = (Model, Params) => {
 
 
             })
+        }
+
+        if (dateFilter) {
+            dateFilter = JSON.parse(dateFilter);
+
+
+            if (dateFilter.from && dateFilter.to) {
+                query.where({[dateFilter.key]: {$gte: moment(dateFilter.from).startOf('day')}})
+                query.where({[dateFilter.key]: {$lte: moment(dateFilter.to).endOf('day')}})
+            }
+
         }
 
 
@@ -126,6 +141,7 @@ export const TableFilterQuery = (Model, Params) => {
 
         query.skip((page - 1) * results).limit(results)
         query.lean().exec((err, data) => {
+            //console.log(err)
             if (err) {
                 return resolve({...errorObj})
 
