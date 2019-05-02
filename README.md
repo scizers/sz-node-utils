@@ -1,8 +1,17 @@
 # Scizers Nodejs Utils 
 
 
-## About .vscode folder
 
-It contains an example to show how to debug the `Jest` test in Visual studio code, remove it if you don't want.
+```
 
-You should add `.vscode` to the `.gitignore` file.
+import {TableFilterQuery} from "sz-node-utils";
+...
+
+let populateArr = [
+    {path: 'dealerId', select: 'dealershipName'}
+];
+let x = await TableFilterQuery(Requirement, {...data, populateArr})
+
+// X will return API Response
+
+```
