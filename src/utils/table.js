@@ -1,7 +1,7 @@
 import _ from "lodash";
 import async from "async";
 import moment from "moment";
-import {errorObj, successObj} from '../../config/settings'
+import {errorObj, successObj} from './settings'
 
 const utils = {
     removeExtraTableParams: (obj) => {
