@@ -1,7 +1,7 @@
 import _ from "lodash";
 import async from "async";
 import moment from "moment";
-import {errorObj, successObj} from './settings'
+import {errorObj, successObj} from '../../config/settings'
 
 const utils = {
     removeExtraTableParams: (obj) => {
@@ -60,12 +60,19 @@ const utils = {
     }
 }
 
-export const TableFilterQuery = (Model, Params) => {
+function isJson (str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
+export const TableFilterQuery = (Model, Params) => {
     return new Promise((resolve) => {
 
         let {results = 10, page = 1, sortField, sortOrder, regExFilters = [], select, populateArr,} = Params
-        // let {results, page, sortField, sortOrder, select, lean} = options;
 
         let populateArrFilters = []
 
@@ -96,21 +103,22 @@ export const TableFilterQuery = (Model, Params) => {
             })
         }
 
-
         if (filter) {
             _.each(filter, (val, key) => {
 
-                if (val !== undefined) {
-
-                    let valueWord = val;
-
-                    if (regExFilters.includes(key)) {
-                        valueWord = new RegExp(val, 'ig')
+                if (isJson(val)) {
+                    val = JSON.parse(val)
+                    query.where({[key]: val});
+                    countQuery.where({[key]: val});
+                } else {
+                    if (val !== undefined) {
+                        let valueWord = val;
+                        if (regExFilters.includes(key)) {
+                            valueWord = new RegExp(val, 'ig')
+                        }
+                        query.where({[key]: valueWord});
+                        countQuery.where({[key]: valueWord});
                     }
-
-                    query.where({[key]: valueWord});
-                    countQuery.where({[key]: valueWord});
-
                 }
 
 
@@ -154,8 +162,6 @@ export const TableFilterQuery = (Model, Params) => {
         })
 
     })
-
-
 }
 export const TableFilterQueryWithAggregate = (Model, fieldName, Params) => {
     return new Promise((resolve) => {
@@ -261,6 +267,5 @@ export const TableFilterQueryWithAggregate = (Model, fieldName, Params) => {
 
     })
 }
-
 
 export default utils;
