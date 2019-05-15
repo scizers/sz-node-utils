@@ -80,6 +80,7 @@ export const TableFilterQuery = (Model, Params) => {
         let filter = utils.removeExtraTableParams(Params);
 
         let {dateFilter} = Params;
+        let {customQuery} = filter;
 
         results = parseInt(results)
         page = parseInt(page)
@@ -101,6 +102,15 @@ export const TableFilterQuery = (Model, Params) => {
                  console.log(val)*/
                 query.populate(val);
             })
+        }
+
+        if (customQuery) {
+            if (typeof customQuery === "string" && isJson(customQuery)) {
+                customQuery = JSON.parse(customQuery);
+            }
+            query.where({...customQuery});
+            countQuery.where({...customQuery});
+            delete filter.customQuery
         }
 
         if (filter) {
