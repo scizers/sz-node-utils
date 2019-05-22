@@ -176,5 +176,4 @@ export const handleMediaResponse = (data, url) => {
     })
 }
 
-
 export default {};
