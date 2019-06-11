@@ -128,10 +128,13 @@ export const TableFilterQuery = (Model, Params) => {
         if (dateFilter) {
             dateFilter = JSON.parse(dateFilter);
 
-
             if (dateFilter.from && dateFilter.to) {
                 query.where({[dateFilter.key]: {$gte: moment(dateFilter.from).startOf('day')}})
                 query.where({[dateFilter.key]: {$lte: moment(dateFilter.to).endOf('day')}})
+
+
+                countQuery.where({[dateFilter.key]: {$gte: moment(dateFilter.from).startOf('day')}})
+                countQuery.where({[dateFilter.key]: {$lte: moment(dateFilter.to).endOf('day')}})
             }
 
         }
