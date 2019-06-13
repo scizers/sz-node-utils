@@ -60,7 +60,7 @@ const utils = {
     }
 }
 
-function isJson (str) {
+function isJson(str) {
     try {
         JSON.parse(str);
     } catch (e) {
@@ -195,8 +195,17 @@ export const TableFilterQueryWithAggregate = (Model, fieldName, Params) => {
                         valueWord = new RegExp(val, 'ig')
                     }
 
-
-                    key = `${fieldName}.` + key;
+                    if (Params.project) {
+                        let findPro = _.find(Params.project, (item1, key1) => {
+                            return key1.indexOf('.' + key) >= 0;
+                        })
+                        if (findPro) {
+                            let newKey = findPro[0] ? findPro[0] : fieldName;
+                            key = `${newKey}.` + key;
+                        }
+                    } else {
+                        key = `${fieldName}.` + key;
+                    }
 
                     matchArr.push({[key]: valueWord})
 
