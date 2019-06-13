@@ -60,7 +60,7 @@ const utils = {
     }
 }
 
-function isJson (str) {
+function isJson(str) {
     try {
         JSON.parse(str);
     } catch (e) {
@@ -138,10 +138,13 @@ export const TableFilterQuery = (Model, Params) => {
         if (dateFilter) {
             dateFilter = JSON.parse(dateFilter);
 
-
             if (dateFilter.from && dateFilter.to) {
                 query.where({[dateFilter.key]: {$gte: moment(dateFilter.from).startOf('day')}})
                 query.where({[dateFilter.key]: {$lte: moment(dateFilter.to).endOf('day')}})
+
+
+                countQuery.where({[dateFilter.key]: {$gte: moment(dateFilter.from).startOf('day')}})
+                countQuery.where({[dateFilter.key]: {$lte: moment(dateFilter.to).endOf('day')}})
             }
 
         }
@@ -202,8 +205,17 @@ export const TableFilterQueryWithAggregate = (Model, fieldName, Params) => {
                         valueWord = new RegExp(val, 'ig')
                     }
 
-
-                    key = `${fieldName}.` + key;
+                    if (Params.project) {
+                        let findPro = _.find(Params.project, (item1, key1) => {
+                            return key1.indexOf('.' + key) >= 0;
+                        })
+                        if (findPro) {
+                            let newKey = findPro[0] ? findPro[0] : fieldName;
+                            key = `${newKey}.` + key;
+                        }
+                    } else {
+                        key = `${fieldName}.` + key;
+                    }
 
                     matchArr.push({[key]: valueWord})
 
