@@ -1,6 +1,6 @@
 import table, { TableFilterQuery as tx, TableFilterQueryWithAggregate as tagx } from './utils/table.js'
 import { handleMediaUpload as hmu, handleSingleMediaUpload as hsmu, handleMediaResponse as hmr } from './utils/utils.js'
-import { TORMQuery : tmr } from './utils/typeORM'
+import { TORMQuery as tmr } from './utils/typeORM'
 
 export const TableFilterQuery = tx
 export const TableFilterQueryWithAggregate = tagx
