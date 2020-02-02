@@ -7,6 +7,7 @@ export const TableFilterQueryWithAggregate = tagx
 export const handleMediaUpload = hmu
 export const handleSingleMediaUpload = hsmu
 export const handleMediaResponse = hmr
+export const TORMQuery
 
 export default {
   TORMQuery,
