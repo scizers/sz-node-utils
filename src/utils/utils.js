@@ -123,7 +123,7 @@ export const handleMediaResponse = (data, url) => {
                         async.each(item, (file, next) => {
 
                             let x = file.path && file.uid;
-                            kk.push({ url: `${url}${file.url}`, status: 'done' , ...file})
+                            kk.push({ status: 'done' , ...file , url: `${url}${file.url}`})
                             next()
 
                         }, () => {
